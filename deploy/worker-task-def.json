@@ -1,0 +1,52 @@
+{
+  "family": "sc-trades-worker",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "512",
+  "memory": "1024",
+  "executionRoleArn": "arn:aws:iam::260119304722:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::260119304722:role/ecsTaskRole",
+  "containerDefinitions": [
+    {
+      "name": "worker",
+      "image": "260119304722.dkr.ecr.us-east-1.amazonaws.com/sc-trades-worker:latest",
+      "essential": true,
+      "environment": [
+        { "name": "TEMPORAL_ADDRESS", "value": "us-east-1.aws.api.temporal.io:7233" },
+        { "name": "TEMPORAL_NAMESPACE", "value": "quickstart-singbar00-e2d9a520.xfqa6" },
+        { "name": "DB_PATH", "value": "/mnt/routes/routes.db" }
+      ],
+      "secrets": [
+        {
+          "name": "TEMPORAL_API_KEY",
+          "valueFrom": "eyJhbGciOiJFUzI1NiIsICJraWQiOiJXdnR3YUEifQ.eyJhY2NvdW50X2lkIjoieGZxYTYiLCAiYXVkIjpbInRlbXBvcmFsLmlvIl0sICJleHAiOjE3NTI2MDY4NTAsICJpc3MiOiJ0ZW1wb3JhbC5pbyIsICJqdGkiOiJKclVwQjc5YTVJSGt3MVAzSFpNQzNNWkJMWXBtZGpkZiIsICJrZXlfaWQiOiJKclVwQjc5YTVJSGt3MVAzSFpNQzNNWkJMWXBtZGpkZiIsICJzdWIiOiIyMzQwZTdiMzUxM2Q0MmJlODE5MmI1N2ZhNTAzZDI4NyJ9.vwSJ0y7mNNwqXki6JneVgCBLR773TgzyPk6Grfc6DLfQoQ55DyOnLRY0N5Upml7AqtZZYvhtND5UlZj06MMTvw"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/sc-trades-worker",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "mountPoints": [
+        {
+          "sourceVolume": "shared-db",
+          "containerPath": "/mnt/routes",
+          "readOnly": false
+        }
+      ]
+    }
+  ],
+  "volumes": [
+    {
+      "name": "shared-db",
+      "efsVolumeConfiguration": {
+        "fileSystemId": "fs-03deef5214d82123a",
+        "transitEncryption": "ENABLED",
+        "rootDirectory": "/"
+      }
+    }
+  ]
+}

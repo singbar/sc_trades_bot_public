@@ -1,0 +1,29 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+RUN mkdir -p /mnt/routes
+RUN apt-get update && apt-get install -y \
+  wget curl gnupg unzip libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 \
+  libxkbcommon0 libxcomposite1 libxdamage1 libxrandr2 libgbm1 libgtk-3-0 \
+  libasound2 xvfb libxshmfence-dev libx11-xcb1 libxcomposite-dev \
+  && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Copy and install dependencies first (cacheable)
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Explicitly copy code folders needed by worker
+COPY activities/ ./activities/
+COPY workflows/ ./workflows/
+COPY discord_bot/ ./discord_bot/
+COPY temporal_client/ ./temporal_client/
+
+# Copy the worker code itself
+COPY worker/worker.py ./worker.py
+
+# Install Playwright browser
+RUN playwright install --with-deps
+
+# Set entry point for the worker
+CMD ["python", "worker.py"]

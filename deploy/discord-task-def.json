@@ -1,0 +1,50 @@
+{
+  "family": "sc-trades-discord",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "arn:aws:iam::260119304722:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::260119304722:role/ecsTaskRole",
+  "containerDefinitions": [
+    {
+      "name": "discord-bot",
+      "image": "260119304722.dkr.ecr.us-east-1.amazonaws.com/sc-trades-discord:latest",
+      "essential": true,
+      "secrets": [
+        {
+          "name": "DISCORD_TOKEN",
+          "valueFrom": "arn:aws:secretsmanager:us-east-1:260119304722:secret:sc-trades/discord-token"
+        }
+      ],
+      "environment": [
+        { "name": "DB_PATH", "value": "/mnt/routes/routes.db" }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/sc-trades-discord",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "mountPoints": [
+        {
+          "sourceVolume": "shared-db",
+          "containerPath": "/mnt/routes",
+          "readOnly": false
+        }
+      ]
+    }
+  ],
+  "volumes": [
+    {
+      "name": "shared-db",
+      "efsVolumeConfiguration": {
+        "fileSystemId": "fs-03deef5214d82123a",
+        "transitEncryption": "ENABLED",
+        "rootDirectory": "/"
+      }
+    }
+  ]
+}
