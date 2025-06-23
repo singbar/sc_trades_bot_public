@@ -1,4 +1,4 @@
-# Star Citizen Hauler Temporal Scraper
+# Star Citizen Discord Bot for Trade Routes
 
 A Temporal-based workflow system for generating hauling routes using SC Trade Tools.
 
