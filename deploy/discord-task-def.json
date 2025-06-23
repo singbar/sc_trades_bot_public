@@ -4,8 +4,8 @@
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "256",
   "memory": "512",
-  "executionRoleArn": "arn:aws:iam::260119304722:role/ecsTaskExecutionRole",
-  "taskRoleArn": "arn:aws:iam::260119304722:role/ecsTaskRole",
+  "executionRoleArn": "YOUR_ARN",
+  "taskRoleArn": "YOUR_ARN",
   "containerDefinitions": [
     {
       "name": "discord-bot",
@@ -14,7 +14,7 @@
       "secrets": [
         {
           "name": "DISCORD_TOKEN",
-          "valueFrom": "arn:aws:secretsmanager:us-east-1:260119304722:secret:sc-trades/discord-token"
+          "valueFrom": "YOUR_DISCORD_KEY"
         }
       ],
       "environment": [

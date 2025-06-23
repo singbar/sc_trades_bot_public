@@ -4,8 +4,8 @@
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "512",
   "memory": "1024",
-  "executionRoleArn": "arn:aws:iam::260119304722:role/ecsTaskExecutionRole",
-  "taskRoleArn": "arn:aws:iam::260119304722:role/ecsTaskRole",
+  "executionRoleArn": "YOUR_ARN",
+  "taskRoleArn": "YOUR_ARN",
   "containerDefinitions": [
     {
       "name": "worker",
@@ -13,13 +13,13 @@
       "essential": true,
       "environment": [
         { "name": "TEMPORAL_ADDRESS", "value": "us-east-1.aws.api.temporal.io:7233" },
-        { "name": "TEMPORAL_NAMESPACE", "value": "quickstart-singbar00-e2d9a520.xfqa6" },
+        { "name": "TEMPORAL_NAMESPACE", "value": "YOUR_TEMPORAL_NAMESPACE" },
         { "name": "DB_PATH", "value": "/mnt/routes/routes.db" }
       ],
       "secrets": [
         {
           "name": "TEMPORAL_API_KEY",
-          "valueFrom": "eyJhbGciOiJFUzI1NiIsICJraWQiOiJXdnR3YUEifQ.eyJhY2NvdW50X2lkIjoieGZxYTYiLCAiYXVkIjpbInRlbXBvcmFsLmlvIl0sICJleHAiOjE3NTI2MDY4NTAsICJpc3MiOiJ0ZW1wb3JhbC5pbyIsICJqdGkiOiJKclVwQjc5YTVJSGt3MVAzSFpNQzNNWkJMWXBtZGpkZiIsICJrZXlfaWQiOiJKclVwQjc5YTVJSGt3MVAzSFpNQzNNWkJMWXBtZGpkZiIsICJzdWIiOiIyMzQwZTdiMzUxM2Q0MmJlODE5MmI1N2ZhNTAzZDI4NyJ9.vwSJ0y7mNNwqXki6JneVgCBLR773TgzyPk6Grfc6DLfQoQ55DyOnLRY0N5Upml7AqtZZYvhtND5UlZj06MMTvw"
+          "valueFrom": "YOUR_TEMPORAL_KEY"
         }
       ],
       "logConfiguration": {

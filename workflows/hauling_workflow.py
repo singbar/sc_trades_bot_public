@@ -1,3 +1,5 @@
+#This worklflow is an early version of the workflow used for local testing. Please use daily_update_workflow instead. 
+
 from datetime import timedelta
 from dataclasses import dataclass
 from typing import Optional
